@@ -9,37 +9,38 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
+    publicPath: '/', // Add this to ensure correct path resolution
   },
   devtool: 'eval-source-map',
   devServer: {
     open: true,
     static: {
       directory: path.join(__dirname, 'dist'),
-      watch: true, // This enables watching of files in the static directory
+      watch: true,
     },
-    watchFiles: ['src/**/*.html'], // Add specific files/patterns to watch
+    watchFiles: ['src/**/*.html'],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/template.html',
     }),
     new ESLintPlugin({
-      extensions: ['js', 'jsx', 'ts', 'tsx'], // File types to lint
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
       overrideConfigFile: path.resolve(__dirname, 'eslint.config.mjs'),
       configType: 'flat',
-      emitWarning: true, // Show warnings in Webpack output
-      files: 'src/**/*', // Run ESLint only on files in the src folder
+      emitWarning: true,
+      files: 'src/**/*',
     }),
   ],
   module: {
     rules: [
       {
-        test: /\.js$/, // Matches all .js files
-        exclude: /node_modules/, // Don't process node_modules
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'], // Uses preset-env for modern JS features
+            presets: ['@babel/preset-env'],
           },
         },
       },
@@ -52,10 +53,17 @@ module.exports = {
         loader: 'html-loader',
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
+        test: /\.(png|jpg|jpeg|gif|webp)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'media/[name][hash][ext][query]', // Output path pattern
+          filename: 'media/[name][hash][ext][query]',
+        },
+      },
+      {
+        test: /\.svg$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'media/[name][hash][ext][query]',
         },
       },
     ],
