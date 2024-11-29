@@ -9,16 +9,12 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    publicPath: '/', // Add this to ensure correct path resolution
   },
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     open: true,
-    static: {
-      directory: path.join(__dirname, 'dist'),
-      watch: true,
-    },
-    watchFiles: ['src/**/*.html'],
+    static: './dist',
+    hot: true, // Hot Module Replacement
   },
   plugins: [
     new HtmlWebpackPlugin({
